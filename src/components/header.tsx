@@ -13,8 +13,8 @@ const Header = () => {
     console.info( "%c HEADER LOADED ✅", "color: white; background-color: blue; font-size: 16px; padding: 4px; border-radius: 8px;" );
     
     return (
-      <header className=" bg-black text-white grid grid-flow-col items-center justify-between p-36 pt-4 pb-4">
-        <div className="grid grid-flow-col gap-9">
+      <header className=" bg-black text-white  p-36 pt-4 pb-4  flex items-center justify-between">
+        <div className="flex flex-row gap-10">
           <a href="">
            <img src={langLogo} alt="Language" className="cursor-pointer"/>
           </a>
@@ -28,7 +28,7 @@ const Header = () => {
 
         <img src={companyLogo} alt="" className="" /> {/*Company Logo Here */}
 
-        <div className="grid grid-flow-col gap-9">
+        <div className="flex flex-row gap-10">
           <a href="">
             <img src={userLogo} alt="User" className="cursor-pointer"/>
           </a>
