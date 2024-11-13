@@ -4,7 +4,13 @@ module.exports = {
     "./public/index.html",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: { "search": "./src/assets/header/search.png" },
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
+    },
+
   },
   plugins: [],
 };
