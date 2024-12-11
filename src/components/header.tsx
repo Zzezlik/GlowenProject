@@ -1,6 +1,5 @@
 import '../input.css';
 
-
 import companyLogo from "../assets/header/logo.svg" // Company Logo (Glowen)
 import langLogo from "../assets/header/lang.svg" // Language Logo 
 import favLogo from "../assets/header/favorites.svg" // Favorites Logo
@@ -10,53 +9,99 @@ import cartLogo from "../assets/header/cart.svg" // Cart Logo
 import userLogo from "../assets/header/user.svg"
 import {useEffect, useState} from "react"; // User Account Logo
 
+import { motion, animate } from "framer-motion";
+
+import {fetchData, getServerData} from "../hooks/shopApiHandle.tsx";
+
 
 
 const Header = () => {
 
     const [isOpen, setOpen]  = useState(false)
+    const [searchValue, setSearchValue] = useState("");
+    const [filterResult, setFilterResult] = useState("");
+    const [serverData, setServerData] = useState("");
 
+    getServerData().then(async data => {
+        setServerData(data)
+    })
 
-    const  toggleSearchBackDrop  = (e) =>  {
-        console.log(e.target)
+    const  toggleSearchBackDrop  = async (e) =>  {
+
         const backdropM = document.querySelector(".backdropModal")
+
         if (e.target === backdropM) {
-            console.log(true)
-            setOpen(!isOpen);
+
+            await animate(backdropM,
+                {opacity:0}
+            )
+
+            setOpen(!isOpen)
         }
 
     }
 
+
+
     const  toggleSearch  = () => setOpen(!isOpen);
+
+
+    const FilterOutput = (component) => {
+
+        const filtered = serverData.map(item => {
+            return (
+                <li className="p-2 bg-zinc-800 rounded flex flex-row text-center items-center transition transform hover:-translate-y-3">
+                    <img src={item.image} className="max-w-36 max-h-fit" alt=""/>
+                    <h1 className="px-4">{item.title}</h1>
+                </li>
+            )
+        })
+
+        return (
+            <>
+                {filtered}
+            </>
+        )
+    }
 
     return (
       <header className=" bg-black text-white">
 
 
           { isOpen &&
-              <div className="z-40 bg-black bg-opacity-50 w-full h-full fixed flex justify-center items-center backdropModal" onClick={toggleSearchBackDrop}>
-              <div className="bg-zinc-900 w-96 flex justify-center  rounded flex-col">
-                  <label htmlFor="">
+              <div className="bg-black bg-opacity-50 w-full h-full fixed flex justify-center items-center backdropModal x-100  " onClick={toggleSearchBackDrop}>
+                  <motion.div
+                      transition={{duration: 0.2}}
+                      animate={{scale: 1.2, opacity: 1,}}
 
-                      <input placeholder="Search..." type="search" className=" transition-all focus:outline-none w-full text-2xl bg-zinc-900 border-transparent border-b-zinc-800 border-2 rounded-t p-2"/>
-                  </label>
+                      className="bg-zinc-900 w-96 flex justify-center  rounded flex-col opacity-0 modal">
+                      <label htmlFor="">
+                          <input type="text" value={searchValue} placeholder="Search..." className="w-full h-14 bg-zinc-900 focus:outline-none p-4 " autoFocus onChange={
+                              (e) => {
+                                  setSearchValue(e.target.value)
+                              }
+                          }/>
+                          <div className="border-b-2 mx-7 rounded border-b-zinc-800"></div>
+                      </label>
+
+                      <div
+                          className="_uploadDiv flex justify-center items-center content-center flex-col min-h-40 border-transparent border-2 overflow-y-auto max-h-96 my-2">
+                          <ul className="h-96 grid grid-cols-1 gap-4 m-4">
+                            < FilterOutput input={searchValue}/>
+                          </ul>
+                      </div>
+                      <div className="border-t-zinc-800 border-t-2 rounded mx-7"></div>
+
+                      <div className="flex justify-center items-end float-right flex-col p-4 opacity-35">
 
 
-                  <div className="_uploadDiv flex justify-center items-center flex-col pb-28 pt-8 border-transparent border-b-zinc-800 border-2" >
+                          <img src={companyLogo} className="w-36" onClick={e => console.log(serverData)} alt=""/>
 
-                      <h1 className="text-2xl opacity-50">none</h1>
-
-                  </div>
-
-                  <div className="flex justify-center items-end float-right flex-col p-4">
-
-                        created
-
-                  </div>
+                      </div>
 
 
+                  </motion.div>
               </div>
-          </div>
           }
 
           <div className='  p-36 pt-4 pb-4  flex items-center justify-around'>
