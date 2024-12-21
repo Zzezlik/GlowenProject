@@ -100,7 +100,7 @@ const Header = () => {
                 </div>
             )}
 
-            <div className="p-36 pt-4 pb-4 flex items-center justify-around">
+            <div className="py-4 flex items-center justify-around">
                 <div className="flex flex-row gap-10">
                     <a href="">
                         <img src={langLogo} alt="Language" className="cursor-pointer" />
